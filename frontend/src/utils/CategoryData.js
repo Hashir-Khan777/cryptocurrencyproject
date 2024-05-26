@@ -7,11 +7,11 @@ import Defi from "../assets/images/defi.png";
 import Stamp from "../assets/images/stamp.png";
 
 export const data = [
-  { image: Mining, title: "mining" },
-  { image: Layer, title: "layer 2" },
-  { image: Ordinal, title: "ordinals" },
-  { image: BRC20, title: "brc-20" },
-  { image: Wallet, title: "wallets" },
-  { image: Defi, title: "defi" },
-  { image: Stamp, title: "Stamps" },
+  { image: Mining, title: "mining", description: "mining" },
+  { image: Layer, title: "layer 2", description: "mining" },
+  { image: Ordinal, title: "ordinals", description: "mining" },
+  { image: BRC20, title: "brc-20", description: "mining" },
+  { image: Wallet, title: "wallets", description: "mining" },
+  { image: Defi, title: "defi", description: "mining" },
+  { image: Stamp, title: "Stamps", description: "mining" },
 ];

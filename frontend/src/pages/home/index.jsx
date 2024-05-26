@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import * as React from "react";
+import { useEffect } from "react";
 import TrendingProjects from "./TrendingProjects";
 import CuratedProjects from "./CuratedProjects";
 import Spotlight from "./Spotlight";
@@ -10,8 +9,11 @@ import Work from "./Work";
 import Hero from "./Hero";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
+import { useDispatch, useSelector } from "react-redux";
+import { getProducts } from "../../store/actions/product.action";
 
 const Home = () => {
+  const { products } = useSelector((state) => state.productReducer);
   // const getData = async () => {
   //   const querySnapshot = await getDocs(collection(db, "betaLogin"));
   //   const data = querySnapshot.docs.map((doc) => ({
@@ -25,11 +27,17 @@ const Home = () => {
   //   getData();
   // }, []);
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
+
   return (
     <>
       <Hero />
-      <TrendingProjects />
-      <CuratedProjects />
+      <TrendingProjects data={products} />
+      <CuratedProjects data={products} />
       <Work />
       <Category />
       <Spotlight />

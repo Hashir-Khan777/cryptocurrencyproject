@@ -2,16 +2,33 @@ import {
   Box,
   Button,
   Flex,
+  Image,
   Select,
   Stack,
   Switch,
   Text,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CustomInput } from "../../components";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addProductImage,
+  createProduct,
+} from "../../store/actions/product.action";
+import { getCategories } from "./../../store/actions/category.action";
+import { useNavigate } from "react-router-dom";
 
 const CreateProject = () => {
   const [form, setForm] = useState();
+
+  const { categories } = useSelector((state) => state.categoryReducer);
+  const { image } = useSelector((state) => state.productReducer);
+
+  const walletAddress = JSON.parse(localStorage.getItem("wallet"))?.addresses[0]
+    ?.address;
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const inputField = (key, value) => {
     setForm({ ...form, [key]: value });
@@ -19,8 +36,27 @@ const CreateProject = () => {
 
   const submit = (e) => {
     e.preventDefault();
-    console.log(form);
+    dispatch(createProduct({ ...form, walletId: walletAddress }));
+    navigate("/");
   };
+
+  const addImage = (e) => {
+    const formData = new FormData();
+    if (e.target.files.length) {
+      formData.append("image", e.target.files[0]);
+      dispatch(addProductImage(formData));
+    }
+  };
+
+  useEffect(() => {
+    dispatch(getCategories());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (image) {
+      setForm({ ...form, image: image });
+    }
+  }, [image]);
 
   return (
     <Box m="auto" maxW="1440px">
@@ -53,15 +89,19 @@ const CreateProject = () => {
           alignItems="center"
           border="1px dashed black"
         >
-          <Text
-            color="lightgrey"
-            fontSize="7xl"
-            top="80px"
-            left={{ base: "100px", md: "120px" }}
-            position="absolute"
-          >
-            +
-          </Text>
+          {image ? (
+            <Image src={image} />
+          ) : (
+            <Text
+              color="lightgrey"
+              fontSize="7xl"
+              top="80px"
+              left={{ base: "100px", md: "120px" }}
+              position="absolute"
+            >
+              +
+            </Text>
+          )}
           <CustomInput
             input={{
               id: "imageUrl",
@@ -73,7 +113,7 @@ const CreateProject = () => {
                 w: "100%",
                 h: "300px",
               },
-              changed: (e) => inputField(e.target.id, e.target.value),
+              changed: addImage,
             }}
           />
         </Box>
@@ -109,35 +149,11 @@ const CreateProject = () => {
           input={{
             id: "investment",
             placeholder: "Investment",
-            type: "text",
+            type: "number",
             required: true,
             changed: (e) => inputField(e.target.id, e.target.value),
           }}
         />
-        <Flex display="flex" gap="15px" alignItems="center">
-          <Text fontSize="lg">Curated</Text>
-          <Switch
-            onChange={(e) => inputField(e.target.id, !false)}
-            isRequired
-            id="curated"
-          />
-        </Flex>
-        <Flex display="flex" gap="15px" alignItems="center">
-          <Text fontSize="lg">treasury funded</Text>
-          <Switch
-            onChange={(e) => inputField(e.target.id, !false)}
-            isRequired
-            id="treasuryFunded"
-          />
-        </Flex>
-        <Flex display="flex" gap="15px" alignItems="center">
-          <Text fontSize="lg">Runstone Reward</Text>
-          <Switch
-            onChange={(e) => inputField(e.target.id, !false)}
-            isRequired
-            id="runstoneReward"
-          />
-        </Flex>
         <Select
           cursor="pointer"
           id="coin"
@@ -146,17 +162,41 @@ const CreateProject = () => {
           placeholder="Choose Coin"
         >
           <option value="STX">STX</option>
-          <option value="bTC">BTC</option>
+          <option value="BTC">BTC</option>
         </Select>
+        <Flex alignItems="center" justifyContent="space-between">
+          <Flex display="flex" gap="15px" alignItems="center">
+            <Text fontSize="lg">Curated</Text>
+            <Switch
+              onChange={(e) => inputField(e.target.id, !false)}
+              id="curated"
+            />
+          </Flex>
+          <Flex display="flex" gap="15px" alignItems="center">
+            <Text fontSize="lg">treasury funded</Text>
+            <Switch
+              onChange={(e) => inputField(e.target.id, !false)}
+              id="treasuryFunded"
+            />
+          </Flex>
+          <Flex display="flex" gap="15px" alignItems="center">
+            <Text fontSize="lg">Runstone Reward</Text>
+            <Switch
+              onChange={(e) => inputField(e.target.id, !false)}
+              id="runstoneRewards"
+            />
+          </Flex>
+        </Flex>
         <Select
           cursor="pointer"
-          id="category"
+          id="CategoryId"
           onChange={(e) => inputField(e.target.id, e.target.value)}
           required={true}
           placeholder="Choose Category"
         >
-          <option value="first">First category</option>
-          <option value="second">Second category</option>
+          {categories.map((cat) => (
+            <option value={cat.id}>{cat.title}</option>
+          ))}
         </Select>
         <Select
           cursor="pointer"
@@ -165,9 +205,20 @@ const CreateProject = () => {
           required={true}
           placeholder="Choose Duration"
         >
-          <option value="1month">1 month</option>
-          <option value="2months">2 months</option>
-          <option value="3months">3 months</option>
+          <option value={new Date(new Date().getMonth() + 2)}>2 month</option>
+          <option value={new Date(new Date().getMonth() + 4)}>4 months</option>
+          <option value={new Date(new Date().getMonth() + 6)}>6 months</option>
+        </Select>
+        <Select
+          cursor="pointer"
+          id="stage"
+          onChange={(e) => inputField(e.target.id, e.target.value)}
+          required={true}
+          placeholder="Choose Stage"
+        >
+          <option value="concept">Concept</option>
+          <option value="prototype">Prototype</option>
+          <option value="live">Live</option>
         </Select>
         <Flex justifyContent="end">
           <Button

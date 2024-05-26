@@ -2,10 +2,9 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { Heading, Box, Container, SimpleGrid } from "@chakra-ui/react";
-import { data } from "../../utils/TrendingProjectsData";
 import { ProjectCard } from "../../components";
 
-const TrendingProjects = () => {
+const TrendingProjects = ({ data }) => {
   return (
     <>
       <Container maxW="1240px">

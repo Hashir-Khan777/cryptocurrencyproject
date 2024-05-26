@@ -19,34 +19,41 @@ import {
   useDisclosure,
   Button,
 } from "@chakra-ui/react";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import banner1 from "../../assets/images/banner1.jpeg";
 import { HamburgerIcon, SearchIcon } from "@chakra-ui/icons";
 import Coin1 from "../../assets/images/Footer_logo.png";
 import Coin2 from "../../assets/images/coin_2.png";
 import { data } from "../../utils/TrendingProjectsData";
-import { CiHeart } from "react-icons/ci";
-import { Link } from "react-router-dom";
 import { ProjectCard } from "../../components";
+import { useDispatch, useSelector } from "react-redux";
+import { getCategories } from "../../store/actions/category.action";
 
-const Categories = [
-  { name: "Ordinals", link: "" },
-  { name: "BRC-20", link: "" },
-  { name: "Layer 2", link: "" },
-  { name: "Mining", link: "" },
-  { name: "Media", link: "" },
-  { name: "Stamps", link: "" },
-  { name: "DEFI", link: "" },
-  { name: "Bitcoin Art", link: "" },
-  { name: "Wallets", link: "" },
-  { name: "Bitcoin Education", link: "" },
-  { name: "Bitcoin Metaverse", link: "" },
-  { name: "Bitcoin Games", link: "" },
-];
+// const Categories = [
+//   { name: "Ordinals", link: "" },
+//   { name: "BRC-20", link: "" },
+//   { name: "Layer 2", link: "" },
+//   { name: "Mining", link: "" },
+//   { name: "Media", link: "" },
+//   { name: "Stamps", link: "" },
+//   { name: "DEFI", link: "" },
+//   { name: "Bitcoin Art", link: "" },
+//   { name: "Wallets", link: "" },
+//   { name: "Bitcoin Education", link: "" },
+//   { name: "Bitcoin Metaverse", link: "" },
+//   { name: "Bitcoin Games", link: "" },
+// ];
 
 const Category = () => {
+  const { categories } = useSelector((state) => state.categoryReducer);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCategories());
+  }, [dispatch]);
 
   return (
     <Box>
@@ -99,7 +106,7 @@ const Category = () => {
             >
               All Categories
             </Text>
-            {Categories.map((item, index) => (
+            {categories.map((item, index) => (
               <Text
                 sx={{
                   cursor: "pointer",
@@ -107,7 +114,7 @@ const Category = () => {
                 }}
                 key={index}
               >
-                {item.name}
+                {item.title}
               </Text>
             ))}
             <Box as="hr" />
@@ -270,7 +277,7 @@ const Category = () => {
                   >
                     All Categories
                   </Text>
-                  {Categories.map((item, index) => (
+                  {categories.map((item, index) => (
                     <Text
                       sx={{
                         cursor: "pointer",
@@ -278,7 +285,7 @@ const Category = () => {
                       }}
                       key={index}
                     >
-                      {item.name}
+                      {item.title}
                     </Text>
                   ))}
                   <Box as="hr" />

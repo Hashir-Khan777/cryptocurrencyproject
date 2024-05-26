@@ -10,51 +10,56 @@ const ProductModel = sequelize.define("Product", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  curated: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    default: false,
-  },
-  trending: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    default: false,
-  },
-  treasuryFunded: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    default: false,
-  },
-  rewards: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    default: false,
-  },
   subTitle: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  content: {
+  description: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  subContent: {
-    type: DataTypes.STRING,
+  curated: {
+    type: DataTypes.BOOLEAN,
     allowNull: false,
+    defaultValue: false,
+  },
+  trending: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+  treasuryFunded: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+  runstoneRewards: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
   },
   time: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  investment: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  coin: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  barRate: {
+  stage: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  barTitle: {
-    type: DataTypes.STRING,
+  fundedAmount: {
+    type: DataTypes.INTEGER,
     allowNull: false,
+    defaultValue: 0,
   },
-  barPercent: {
+  walletId: {
     type: DataTypes.STRING,
     allowNull: false,
   },

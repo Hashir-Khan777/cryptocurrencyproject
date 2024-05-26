@@ -41,8 +41,7 @@ const NAV_ITEMS = [
   },
   {
     label: "Start a Project",
-    to: "",
-    href: "https://blocksurvey.io/ion-inventonbtc-start-a-project-qa6auObvQaCkVgIyILXj.g?v=o",
+    to: "/createProject",
   },
 ];
 

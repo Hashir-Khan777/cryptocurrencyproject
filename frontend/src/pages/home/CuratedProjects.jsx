@@ -16,13 +16,12 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { CiHeart } from "react-icons/ci";
-import { data } from "../../utils/TrendingProjectsData";
 import { FaCheckSquare } from "react-icons/fa";
 import { QuestionIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 import { ProjectCard } from "../../components";
 
-const CuratedProjects = () => {
+const CuratedProjects = ({ data }) => {
   return (
     <>
       <Container maxW="1240px">
@@ -43,7 +42,7 @@ const CuratedProjects = () => {
             justifyContent="center"
           >
             {data
-              .filter((x) => !x.trending)
+              .filter((x) => x.curated)
               .map((item, index) => (
                 <ProjectCard item={item} key={index} />
               ))}

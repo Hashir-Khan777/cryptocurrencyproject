@@ -2,6 +2,8 @@ const cors = require("cors");
 const express = require("express");
 const AppRouter = require("./routes");
 const sequelize = require("./config/sequelize");
+const CategoryModel = require("./models/category");
+const ProductModel = require("./models/product");
 
 require("dotenv").config();
 
@@ -12,6 +14,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api", AppRouter);
+
+CategoryModel.hasMany(ProductModel, { as: "products", onDelete: "CASCADE" });
+ProductModel.hasOne(CategoryModel, {
+  as: "category",
+  forienKey: "categoryId",
+  onDelete: "CASCADE",
+});
 
 sequelize.sync();
 

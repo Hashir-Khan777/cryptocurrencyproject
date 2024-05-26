@@ -18,7 +18,7 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { data } from "../../utils/TrendingProjectsData";
 import detailImage from "../../assets/images/detail.png";
@@ -29,29 +29,40 @@ import car from "../../assets/images/car.png";
 import man from "../../assets/images/man.png";
 import bike from "../../assets/images/bike.jpeg";
 import { FaFacebookSquare } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { getProduct } from "../../store/actions/product.action";
 
 const Project = () => {
   const { id } = useParams();
 
-  const project = data.find((x) => x.id == id);
+  const { product } = useSelector((state) => state.productReducer);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getProduct({ id }));
+  }, [dispatch]);
 
   return (
     <Box>
       <Container maxW="1240px">
         <Flex gap="20px" my="100px" flexWrap={{ base: "wrap", lg: "nowrap" }}>
           <Image
-            src={project.image}
+            src={product.image}
             sx={{
-              width: { base: "100%", lg: "40%" },
-              height: { base: "260px", md: "450px" },
+              width: { base: "100%", lg: "60%" },
+              height: { base: "260px", md: "100%" },
             }}
           />
           <Box>
             <Text color="#088366">FUNDING LIVE</Text>
             <Text sx={{ fontSize: "32px", fontWeight: "bold" }}>
-              {project.title}
+              {product.title}
             </Text>
-            <Text sx={{ fontSize: "20px" }}>{project.content}</Text>
+            <Text sx={{ fontSize: "15px", mb: "20px" }}>
+              {product.category?.title}
+            </Text>
+            <Text sx={{ fontSize: "20px" }}>{product.description}</Text>
             <Flex gap="10px" mt="20px">
               <Image src={detailImage} />
               <Box>
@@ -59,7 +70,7 @@ const Project = () => {
                 <Text>3 Campaigns | Hongkong, Hong Kong</Text>
               </Box>
             </Flex>
-            {project.curated ? (
+            {product.curated ? (
               <Flex alignItems="center" mt="20px">
                 <Icon
                   as={FaCheckSquare}
@@ -78,8 +89,12 @@ const Project = () => {
               mb="5px"
               mt="20px"
             >
-              <Text sx={{ fontSize: "20px" }}>1.22 BTC raised</Text>
-              <Text sx={{ fontSize: "20px" }}>4 BTC goal</Text>
+              <Text sx={{ fontSize: "20px" }}>
+                {product.fundedAmount} {product.coin} raised
+              </Text>
+              <Text sx={{ fontSize: "20px" }}>
+                {product.investment} BTC goal
+              </Text>
             </Flex>
             <Progress
               colorScheme="gray"
@@ -89,11 +104,14 @@ const Project = () => {
             />
             <Text sx={{ fontSize: "14px" }} mt="20px">
               <Text as="span" sx={{ fontWeight: "bold" }}>
-                1.22 BTC
+                {product.fundedAmount} {product.coin}
               </Text>{" "}
               raised by 239 backers
             </Text>
-            <Text sx={{ fontSize: "14px" }}>1.22 BTC funded of 4 BTC goal</Text>
+            <Text sx={{ fontSize: "14px" }}>
+              {product.fundedAmount} {product.coin} funded of{" "}
+              {product.investment} {product.coin} goal
+            </Text>
             <Flex alignItems="flex-end" justifyContent="space-between">
               <Box mt={6}>
                 <Text
@@ -108,8 +126,11 @@ const Project = () => {
                   Fund with
                 </Text>
                 <HStack spacing={5} mt={"4px"}>
-                  <Image sx={{ width: "50px" }} src={Coin1} alt="Coin1" />
-                  <Image sx={{ width: "50px" }} src={Coin2} alt="Coin2" />
+                  {product.coin === "BTC" ? (
+                    <Image sx={{ width: "50px" }} src={Coin1} alt="Coin1" />
+                  ) : (
+                    <Image sx={{ width: "50px" }} src={Coin2} alt="Coin2" />
+                  )}
                 </HStack>
               </Box>
               <Button
@@ -132,7 +153,7 @@ const Project = () => {
           </Box>
         </Flex>
       </Container>
-      {project.curated ? (
+      {product.curated ? (
         <Box bg={"#e6e7e9"} py={{ base: 20, md: 36 }} mb="100px">
           <Container maxW="1240px">
             <Flex alignItems={"center"} gap="10px">

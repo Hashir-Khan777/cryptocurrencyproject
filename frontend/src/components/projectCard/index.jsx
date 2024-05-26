@@ -42,7 +42,7 @@ const ProjectCard = ({ item }) => {
               maxW={{ base: "100%", md: "470px" }}
               color={useColorModeValue("#000", "gray.400")}
             >
-              {item.title}
+              {item.subTitle}
             </Text>
             <Flex alignItems="center" gap="10px">
               {item.curated ? (
@@ -59,7 +59,7 @@ const ProjectCard = ({ item }) => {
                   </Box>
                 </Tooltip>
               ) : null}
-              {item.rewards ? (
+              {item.runstoneRewards ? (
                 <Tooltip label="Runstone Rewards" hasArrow>
                   <Box>
                     <Icon as={FaCheckSquare} color="#000000" />
@@ -78,7 +78,7 @@ const ProjectCard = ({ item }) => {
             maxW={{ base: "100%", md: "470px" }}
             color={useColorModeValue("#000", "gray.400")}
           >
-            {item.subTitle}
+            {item.title}
           </Text>
           <Text
             fontSize="0.7rem"
@@ -89,19 +89,7 @@ const ProjectCard = ({ item }) => {
             mb={4}
             color={useColorModeValue("#6d6d6e", "gray.400")}
           >
-            {item.content}
-          </Text>
-          <Text
-            fontSize="0.8rem"
-            textAlign="left"
-            lineHeight="1.375"
-            fontWeight="400"
-            maxW={{ base: "100%", md: "470px" }}
-            mb={4}
-            textTransform={"uppercase"}
-            color={useColorModeValue("#6d6d6e", "gray.400")}
-          >
-            {item.subContent}
+            {item.description}
           </Text>
           <Flex gap={"2"}>
             <Text
@@ -113,7 +101,7 @@ const ProjectCard = ({ item }) => {
               textTransform={"uppercase"}
               color={useColorModeValue("#000", "gray.400")}
             >
-              {item.barRate}
+              {item.fundedAmount}
             </Text>
 
             <Text
@@ -126,7 +114,7 @@ const ProjectCard = ({ item }) => {
               mr={20}
               color={useColorModeValue("#6d6d6e", "gray.400")}
             >
-              {item.barTitle}
+              {item.coin} Raised
             </Text>
             <Text
               fontSize="0.8rem"
@@ -137,7 +125,7 @@ const ProjectCard = ({ item }) => {
               textTransform={"uppercase"}
               color={useColorModeValue("#6d6d6e", "gray.400")}
             >
-              {item.barPercent}
+              {(item.fundedAmount / item.investment) * 100}%
             </Text>
           </Flex>
           <Progress size="sm" value={20} rounded={"10px"} />
@@ -149,7 +137,7 @@ const ProjectCard = ({ item }) => {
             maxW={{ base: "100%", md: "470px" }}
             color={useColorModeValue("#6d6d6e", "gray.400")}
           >
-            {item.time}
+            {new Date(item.time).toLocaleDateString()}
           </Text>
         </Stack>
       </CardBody>
