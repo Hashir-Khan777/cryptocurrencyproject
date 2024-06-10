@@ -1925,10 +1925,10 @@
   resolved "https://registry.npmjs.org/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.13.0.tgz"
   integrity sha512-UKXUQNbO3DOhzLRwHSpa0HnhhCgNODvfoPWv2FCXme8N/ANFfhIPMGuOT+QuKd16+B5yxZ0HdpNlqPvTMS1qfw==
 
-"@sats-connect/core@0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@sats-connect/core/-/core-0.0.4.tgz#e6f914f6d08a5a56a966df8ee9277acc0adf85d3"
-  integrity sha512-v+u49OXku8S5Mh9wzQ6pSdNU4MppMjjUyXy/ZBE6KxqgP7Nnnz3N2VmaBSIGQx/EEy4O3L8SnJZyAwQ7QfOf7g==
+"@sats-connect/core@0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@sats-connect/core/-/core-0.0.9.tgz#1e207835fb3f5b31cd7055f8d683a2c59002fd8d"
+  integrity sha512-7/hY7VF9OqNDYcXlADluMKCTDu9f4OENWkWWO8K1LqanuyZhepu3fBRQKSCT6Xr/3KorvSH/e8sSTcJCzuVOAA==
   dependencies:
     axios "1.6.8"
     bitcoin-address-validation "2.2.3"
@@ -1936,48 +1936,18 @@
     jsontokens "4.0.1"
     lodash.omit "4.5.0"
 
-"@sats-connect/core@0.0.4-caef0cb":
-  version "0.0.4-caef0cb"
-  resolved "https://registry.yarnpkg.com/@sats-connect/core/-/core-0.0.4-caef0cb.tgz#83d39d179036dd2779a35500e72865a75dd6ef04"
-  integrity sha512-M/yxUgnYF6JVhfLxMj0pLYZFiJfwkd7C3GYI43aVbaIVhqoSBianEEj2duIiSDAQLC03Scqbt2LXUu42dPs1fA==
+"@sats-connect/make-default-provider-config@0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@sats-connect/make-default-provider-config/-/make-default-provider-config-0.0.5.tgz#b5e2044122d062575fdc9110ac635d6909cf355d"
+  integrity sha512-b/v4IeDEde5DqFOdMbMmf3B0t/lxlKnY04f3YIUWe1khOg3S6VdcK9Mqva+WUOsJHBTIA5b4hK7CqfMjx1Ic+w==
   dependencies:
-    axios "1.6.8"
-    bitcoin-address-validation "2.2.3"
-    buffer "6.0.3"
-    jsontokens "4.0.1"
-    lodash.omit "4.5.0"
-
-"@sats-connect/core@0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@sats-connect/core/-/core-0.0.7.tgz#bd7ae64cc30fe0626cf70bcb12cb31c043b5a933"
-  integrity sha512-4m5amq+orHDbqLqCRWojvDQigKAys33Ntwc7U5xNtFeib4j+DpYz6lVAL/s3cay1kq03WUZ+Gil3l5rv+5bQWQ==
-  dependencies:
-    axios "1.6.8"
-    bitcoin-address-validation "2.2.3"
-    buffer "6.0.3"
-    jsontokens "4.0.1"
-    lodash.omit "4.5.0"
-
-"@sats-connect/make-default-provider-config@0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@sats-connect/make-default-provider-config/-/make-default-provider-config-0.0.1.tgz#7c85e67fc6040a39e9f7b9e29424d2d6132573c3"
-  integrity sha512-Hb1ZbpJ3DnRM7vRUvNepUs6/SVAeH4CdeDsTllXrzOG9jAG4HI+jG7WGDLavFHc6vQCSfTBPH4c/L7S74hMZMg==
-  dependencies:
-    "@sats-connect/core" "0.0.4-caef0cb"
-    "@sats-connect/ui" "0.0.3-07f4874"
+    "@sats-connect/ui" "0.0.6"
     bowser "2.11.0"
 
-"@sats-connect/ui@0.0.3-07f4874":
-  version "0.0.3-07f4874"
-  resolved "https://registry.yarnpkg.com/@sats-connect/ui/-/ui-0.0.3-07f4874.tgz#459d738d6c049b42687db8bbce6e481134b4f23f"
-  integrity sha512-H1rj4qOGr72M2pSFtgtFk9TjFHRhTt4vm2ct0iBJaLF4RLIa9EvPkFTMwBYhGBYNcuBpN36eYUBN7hRydfCopg==
-  dependencies:
-    "@sats-connect/core" "0.0.4"
-
-"@sats-connect/ui@0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@sats-connect/ui/-/ui-0.0.4.tgz#81e0c224517af3acf9567a017d78eddd64529f38"
-  integrity sha512-gmfsqPn44vsJubQC7KuK7zGnBgpLvDzadMlyCwsaBsASV7u8AxNdNas0xVEy6eIBa0Eim7AGcGNTulBFI8YRnA==
+"@sats-connect/ui@0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@sats-connect/ui/-/ui-0.0.6.tgz#67b2239dbca95e8df110ed821795340128b36aad"
+  integrity sha512-H3bFFhr9CcY1oNosNi/QJszmMHSht4U19bUWfM3vzayAKgV4ebY6iUnRK5g3p2rVLLWVzlpaw1J9m+7JWwyBfA==
 
 "@types/babel__core@^7.20.5":
   version "7.20.5"
@@ -4352,14 +4322,14 @@ safe-regex-test@^1.0.3:
     es-errors "^1.3.0"
     is-regex "^1.1.4"
 
-sats-connect@^2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/sats-connect/-/sats-connect-2.2.2.tgz#24c037487125a3100b2504669f182d0956546b5d"
-  integrity sha512-LfgzKCI1CnRfcKo6EEiq+sQTlr7xfPdwSQm2fxASCfT5muzQodQsjpRZQF2XPsiHsbbUT9AxJewQiNsckxE4pQ==
+sats-connect@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/sats-connect/-/sats-connect-2.4.0.tgz#2dc1fef3ea2efec1be3f28749c33b413b2ec8619"
+  integrity sha512-9wgPaCEhrrmWzXgEMPvVLQb2JoCLEwGd0I2oMK79QgrbQMQYgOm+y8McTdXNnwqgJBimbU/Ik1i4l8YUwTu0fg==
   dependencies:
-    "@sats-connect/core" "0.0.7"
-    "@sats-connect/make-default-provider-config" "0.0.1"
-    "@sats-connect/ui" "0.0.4"
+    "@sats-connect/core" "0.0.9"
+    "@sats-connect/make-default-provider-config" "0.0.5"
+    "@sats-connect/ui" "0.0.6"
 
 scheduler@^0.23.0:
   version "0.23.0"

@@ -7,6 +7,13 @@ import {
   HStack,
   Icon,
   Image,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
   Progress,
   SimpleGrid,
   Stack,
@@ -17,8 +24,9 @@ import {
   Tabs,
   Text,
   useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { data } from "../../utils/TrendingProjectsData";
 import detailImage from "../../assets/images/detail.png";
@@ -31,17 +39,57 @@ import bike from "../../assets/images/bike.jpeg";
 import { FaFacebookSquare } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { getProduct } from "../../store/actions/product.action";
+import Wallet from "sats-connect";
+import { getTransactions } from "../../store/actions/transactions.action";
+import XverseIcon from "../../assets/images/xverse_icon.png";
+import LeatherIcon from "../../assets/images/leather_icon.png";
 
 const Project = () => {
   const { id } = useParams();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const [amount, setAmount] = useState(0);
+  const [wallet, setWallet] = useState("leather");
 
   const { product } = useSelector((state) => state.productReducer);
+  const { transactions } = useSelector((state) => state.transactionsReducer);
 
   const dispatch = useDispatch();
+
+  const transferBitcoin = async () => {
+    if (wallet === "leather") {
+      const response = await window.LeatherProvider.request("sendTransfer", {
+        recipients: [
+          {
+            address: product.walletId,
+            amount: amount.toString(),
+          },
+        ],
+        network: "testnet",
+      });
+      console.log(response);
+    } else {
+      const response = await Wallet.request("sendTransfer", {
+        recipients: [
+          {
+            address: product.walletId,
+            amount: amount,
+          },
+        ],
+      });
+      console.log(response);
+    }
+  };
 
   useEffect(() => {
     dispatch(getProduct({ id }));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (product?.walletId) {
+      dispatch(getTransactions({ wallet: product.walletId }));
+    }
+  }, [dispatch, product]);
 
   return (
     <Box>
@@ -90,7 +138,7 @@ const Project = () => {
               mt="20px"
             >
               <Text sx={{ fontSize: "20px" }}>
-                {product.fundedAmount} {product.coin} raised
+                {transactions?.final_balance / 100000000} {product.coin} raised
               </Text>
               <Text sx={{ fontSize: "20px" }}>
                 {product.investment} BTC goal
@@ -99,17 +147,17 @@ const Project = () => {
             <Progress
               colorScheme="gray"
               size="sm"
-              value={20}
+              value={(product.investment / transactions?.final_balance) * 100}
               rounded={"10px"}
             />
             <Text sx={{ fontSize: "14px" }} mt="20px">
               <Text as="span" sx={{ fontWeight: "bold" }}>
-                {product.fundedAmount} {product.coin}
+                {transactions?.final_balance / 100000000} {product.coin}
               </Text>{" "}
-              raised by 239 backers
+              raised by {transactions?.txs?.length} backers
             </Text>
             <Text sx={{ fontSize: "14px" }}>
-              {product.fundedAmount} {product.coin} funded of{" "}
+              {transactions?.final_balance / 100000000} {product.coin} funded of{" "}
               {product.investment} {product.coin} goal
             </Text>
             <Flex alignItems="flex-end" justifyContent="space-between">
@@ -141,6 +189,7 @@ const Project = () => {
                 _hover={{
                   bg: "#e69517",
                 }}
+                onClick={onOpen}
               >
                 Fund Now
               </Button>
@@ -422,6 +471,55 @@ const Project = () => {
           </TabPanels>
         </Tabs>
       </Container>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Fund</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <HStack spacing={5} mt={"4px"}>
+              <Image
+                sx={{
+                  width: { base: "50px", md: "100px" },
+                  cursor: "pointer",
+                  border: wallet === "xverse" ? "3px solid blue" : "none",
+                }}
+                src={XverseIcon}
+                alt="Coin1"
+                onClick={() => setWallet("xverse")}
+              />
+              <Image
+                sx={{
+                  width: { base: "50px", md: "100px" },
+                  cursor: "pointer",
+                  border: wallet === "leather" ? "3px solid blue" : "none",
+                }}
+                src={LeatherIcon}
+                alt="Coin2"
+                onClick={() => setWallet("leather")}
+              />
+            </HStack>
+            <Input
+              type="number"
+              placeholder="Amount"
+              marginY={10}
+              onChange={(e) => setAmount(e.target.value)}
+            />
+            <Button
+              fontSize="sm"
+              fontWeight={600}
+              color="white"
+              bg="#E16A15"
+              _hover={{
+                bg: "#e69517",
+              }}
+              onClick={transferBitcoin}
+            >
+              Send
+            </Button>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

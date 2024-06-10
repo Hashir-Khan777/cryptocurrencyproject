@@ -26,6 +26,7 @@ import Logo from "../../assets/images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { IoIosLogOut } from "react-icons/io";
 import { getAddress } from "sats-connect";
+import Wallet from "sats-connect";
 import XverseIcon from "../../assets/images/xverse_icon.png";
 import LeatherIcon from "../../assets/images/leather_icon.png";
 import { LuUserCircle } from "react-icons/lu";
@@ -76,10 +77,10 @@ export default function WithSubnavigation() {
   const connectWalletWithXverse = async () => {
     const getAddressOptions = {
       payload: {
-        purposes: ["ordinals", "payment"],
+        purposes: ["ordinals", "payment", "stacks"],
         message: "Address for receiving Ordinals and payments",
         network: {
-          type: "Mainnet",
+          type: "Testnet",
         },
       },
       onFinish: (response) => {
