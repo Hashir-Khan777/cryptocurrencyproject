@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertIcon,
   Badge,
   Box,
   Button,
@@ -28,7 +30,6 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { data } from "../../utils/TrendingProjectsData";
 import detailImage from "../../assets/images/detail.png";
 import { FaCheckSquare, FaLink, FaTwitter } from "react-icons/fa";
 import Coin1 from "../../assets/images/Footer_logo.png";
@@ -38,7 +39,7 @@ import man from "../../assets/images/man.png";
 import bike from "../../assets/images/bike.jpeg";
 import { FaFacebookSquare } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { getProduct } from "../../store/actions/product.action";
+import { fundProduct, getProduct } from "../../store/actions/product.action";
 import Wallet from "sats-connect";
 import { getTransactions } from "../../store/actions/transactions.action";
 import XverseIcon from "../../assets/images/xverse_icon.png";
@@ -50,46 +51,52 @@ const Project = () => {
 
   const [amount, setAmount] = useState(0);
   const [wallet, setWallet] = useState("leather");
+  const [error, setError] = useState("");
 
   const { product } = useSelector((state) => state.productReducer);
-  const { transactions } = useSelector((state) => state.transactionsReducer);
 
   const dispatch = useDispatch();
 
   const transferBitcoin = async () => {
     if (wallet === "leather") {
-      const response = await window.LeatherProvider.request("sendTransfer", {
-        recipients: [
-          {
-            address: product.walletId,
-            amount: amount.toString(),
-          },
-        ],
-        network: "testnet",
-      });
-      console.log(response);
+      try {
+        const response = await window.LeatherProvider.request("sendTransfer", {
+          recipients: [
+            {
+              address: product.walletId,
+              amount: amount.toString(),
+            },
+          ],
+          network: "testnet",
+        });
+        dispatch(fundProduct({ id: product.id, fundedAmount: amount }));
+        console.log(response, "response");
+        onClose();
+      } catch (err) {
+        setError(err.error.message);
+      }
     } else {
-      const response = await Wallet.request("sendTransfer", {
-        recipients: [
-          {
-            address: product.walletId,
-            amount: amount,
-          },
-        ],
-      });
-      console.log(response);
+      try {
+        const response = await Wallet.request("sendTransfer", {
+          recipients: [
+            {
+              address: product.walletId,
+              amount: 2000,
+            },
+          ],
+        });
+        dispatch(fundProduct({ id: product.id, fundedAmount: amount }));
+        console.log(response, "response");
+        onClose();
+      } catch (err) {
+        setError(err.error.message);
+      }
     }
   };
 
   useEffect(() => {
     dispatch(getProduct({ id }));
   }, [dispatch]);
-
-  useEffect(() => {
-    if (product?.walletId) {
-      dispatch(getTransactions({ wallet: product.walletId }));
-    }
-  }, [dispatch, product]);
 
   return (
     <Box>
@@ -138,7 +145,7 @@ const Project = () => {
               mt="20px"
             >
               <Text sx={{ fontSize: "20px" }}>
-                {transactions?.final_balance / 100000000} {product.coin} raised
+                {product?.fundedAmount / 100000000} {product.coin} raised
               </Text>
               <Text sx={{ fontSize: "20px" }}>
                 {product.investment} BTC goal
@@ -147,17 +154,11 @@ const Project = () => {
             <Progress
               colorScheme="gray"
               size="sm"
-              value={(product.investment / transactions?.final_balance) * 100}
+              value={(product.investment / product?.fundedAmount) * 100}
               rounded={"10px"}
             />
-            <Text sx={{ fontSize: "14px" }} mt="20px">
-              <Text as="span" sx={{ fontWeight: "bold" }}>
-                {transactions?.final_balance / 100000000} {product.coin}
-              </Text>{" "}
-              raised by {transactions?.txs?.length} backers
-            </Text>
             <Text sx={{ fontSize: "14px" }}>
-              {transactions?.final_balance / 100000000} {product.coin} funded of{" "}
+              {product?.fundedAmount / 100000000} {product.coin} funded of{" "}
               {product.investment} {product.coin} goal
             </Text>
             <Flex alignItems="flex-end" justifyContent="space-between">
@@ -477,6 +478,12 @@ const Project = () => {
           <ModalHeader>Fund</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            {error ? (
+              <Alert status="error">
+                <AlertIcon />
+                {error}
+              </Alert>
+            ) : null}
             <HStack spacing={5} mt={"4px"}>
               <Image
                 sx={{

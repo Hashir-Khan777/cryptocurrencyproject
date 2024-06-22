@@ -40,6 +40,19 @@ ProductRouter.post("/", async (req, res) => {
   }
 });
 
+ProductRouter.put("/:id", async (req, res) => {
+  try {
+    const product = await productModel.findOne({
+      where: { id: req.params.id },
+    });
+    product.increment(req.body);
+    product.save();
+    res.status(200).send(product);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 ProductRouter.post(
   "/image",
   multerService.single("image"),

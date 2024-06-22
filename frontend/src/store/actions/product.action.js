@@ -64,3 +64,20 @@ export const addProductImage = createAsyncThunk(
     }
   }
 );
+
+export const fundProduct = createAsyncThunk(
+  "products/fund",
+  async (obj, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.put(
+        `http://localhost:5000/api/products/${obj.id}`,
+        obj
+      );
+      return data;
+    } catch (err) {
+      return rejectWithValue(
+        err.response.data.message ? err.response.data.message : err.message
+      );
+    }
+  }
+);
