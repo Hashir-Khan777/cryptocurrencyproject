@@ -5,7 +5,9 @@ export const getCategories = createAsyncThunk(
   "categories/get",
   async (obj, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`http://localhost:5000/api/categories`);
+      const { data } = await axios.get(
+        `https://ec2-3-129-128-146.us-east-2.compute.amazonaws.com/api/categories`
+      );
       return data;
     } catch (err) {
       return rejectWithValue(

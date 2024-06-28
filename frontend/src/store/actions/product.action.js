@@ -5,7 +5,9 @@ export const getProducts = createAsyncThunk(
   "products/get",
   async (obj, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`http://localhost:5000/api/products`);
+      const { data } = await axios.get(
+        `https://ec2-3-129-128-146.us-east-2.compute.amazonaws.com/api/products`
+      );
       return data;
     } catch (err) {
       return rejectWithValue(
@@ -20,7 +22,7 @@ export const getProduct = createAsyncThunk(
   async (obj, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/products/${obj.id}`
+        `https://ec2-3-129-128-146.us-east-2.compute.amazonaws.com/api/products/${obj.id}`
       );
       return data;
     } catch (err) {
@@ -36,7 +38,7 @@ export const createProduct = createAsyncThunk(
   async (obj, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/products`,
+        `https://ec2-3-129-128-146.us-east-2.compute.amazonaws.com/api/products`,
         obj
       );
       return data;
@@ -53,7 +55,7 @@ export const addProductImage = createAsyncThunk(
   async (obj, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/products/image`,
+        `https://ec2-3-129-128-146.us-east-2.compute.amazonaws.com/api/products/image`,
         obj
       );
       return data;
@@ -70,7 +72,7 @@ export const fundProduct = createAsyncThunk(
   async (obj, { rejectWithValue }) => {
     try {
       const { data } = await axios.put(
-        `http://localhost:5000/api/products/${obj.id}`,
+        `https://ec2-3-129-128-146.us-east-2.compute.amazonaws.com/api/products/${obj.id}`,
         obj
       );
       return data;
