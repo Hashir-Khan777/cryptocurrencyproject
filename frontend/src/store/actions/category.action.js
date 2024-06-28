@@ -6,7 +6,7 @@ export const getCategories = createAsyncThunk(
   async (obj, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(
-        `https://ec2-3-129-128-146.us-east-2.compute.amazonaws.com/api/categories`
+        `http://18.224.246.176:5000/api/categories`
       );
       return data;
     } catch (err) {
