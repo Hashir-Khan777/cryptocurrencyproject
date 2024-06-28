@@ -4,11 +4,11 @@ const Config = require("../dbs");
 require("dotenv").config();
 
 const sequelize = new Sequelize(
-  Config[process.env.DB_ENV]?.database,
-  Config[process.env.DB_ENV]?.username,
-  Config[process.env.DB_ENV]?.password,
+  "defaultdb",
+  "avnadmin",
+  "AVNS_B8fk_9sK0YA7oE2r1U2",
   {
-    host: Config[process.env.DB_ENV]?.host,
+    host: "pg-f0e7207-hashirk966-d8b9.f.aivencloud.com",
     dialect: "postgres",
   }
 );
