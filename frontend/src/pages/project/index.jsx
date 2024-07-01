@@ -154,7 +154,7 @@ const Project = () => {
             <Progress
               colorScheme="gray"
               size="sm"
-              value={(product.investment / product?.fundedAmount) * 100}
+              value={(product?.fundedAmount / product.investment) * 100}
               rounded={"10px"}
             />
             <Text sx={{ fontSize: "14px" }}>
