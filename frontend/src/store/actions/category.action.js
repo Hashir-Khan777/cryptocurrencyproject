@@ -6,7 +6,7 @@ export const getCategories = createAsyncThunk(
   async (obj, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(
-        `http://18.224.246.176:5000/api/categories`
+        `https://ionbackend.onrender.com/api/categories`
       );
       return data;
     } catch (err) {

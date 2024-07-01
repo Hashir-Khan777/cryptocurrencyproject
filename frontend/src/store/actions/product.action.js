@@ -6,7 +6,7 @@ export const getProducts = createAsyncThunk(
   async (obj, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(
-        `http://18.224.246.176:5000/api/products`
+        `https://ionbackend.onrender.com/api/products`
       );
       return data;
     } catch (err) {
@@ -22,7 +22,7 @@ export const getProduct = createAsyncThunk(
   async (obj, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(
-        `http://18.224.246.176:5000/api/products/${obj.id}`
+        `https://ionbackend.onrender.com/api/products/${obj.id}`
       );
       return data;
     } catch (err) {
@@ -38,7 +38,7 @@ export const createProduct = createAsyncThunk(
   async (obj, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
-        `http://18.224.246.176:5000/api/products`,
+        `https://ionbackend.onrender.com/api/products`,
         obj
       );
       return data;
@@ -55,7 +55,7 @@ export const addProductImage = createAsyncThunk(
   async (obj, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
-        `http://18.224.246.176:5000/api/products/image`,
+        `https://ionbackend.onrender.com/api/products/image`,
         obj
       );
       return data;
@@ -72,7 +72,7 @@ export const fundProduct = createAsyncThunk(
   async (obj, { rejectWithValue }) => {
     try {
       const { data } = await axios.put(
-        `http://18.224.246.176:5000/api/products/${obj.id}`,
+        `https://ionbackend.onrender.com/api/products/${obj.id}`,
         obj
       );
       return data;
