@@ -18,6 +18,10 @@ const ProductModel = sequelize.define("Product", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  details: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   curated: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
@@ -62,6 +66,9 @@ const ProductModel = sequelize.define("Product", {
   walletId: {
     type: DataTypes.STRING,
     allowNull: false,
+  },
+  fundedWallets: {
+    type: DataTypes.ARRAY(DataTypes.STRING),
   },
 });
 

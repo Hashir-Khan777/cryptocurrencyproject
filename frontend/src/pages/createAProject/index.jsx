@@ -144,6 +144,15 @@ const CreateProject = () => {
             changed: (e) => inputField(e.target.id, e.target.value),
           }}
         />
+        <CustomInput
+          input={{
+            id: "details",
+            placeholder: "Details",
+            type: "text",
+            required: true,
+            changed: (e) => inputField(e.target.id, e.target.value),
+          }}
+        />
 
         <CustomInput
           input={{

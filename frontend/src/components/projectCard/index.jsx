@@ -91,7 +91,7 @@ const ProjectCard = ({ item }) => {
           >
             {item.description}
           </Text>
-          <Flex gap={"2"}>
+          <Flex gap={"2"} justifyContent="space-between">
             <Text
               fontSize="0.8rem"
               textAlign="left"
@@ -101,20 +101,7 @@ const ProjectCard = ({ item }) => {
               textTransform={"uppercase"}
               color={useColorModeValue("#000", "gray.400")}
             >
-              {item.fundedAmount}
-            </Text>
-
-            <Text
-              fontSize="0.8rem"
-              textAlign="left"
-              lineHeight="1.375"
-              fontWeight="400"
-              maxW={{ base: "100%", md: "470px" }}
-              textTransform={"uppercase"}
-              mr={20}
-              color={useColorModeValue("#6d6d6e", "gray.400")}
-            >
-              {item.coin} Raised
+              {item.fundedAmount / 100000000} {item.coin} Raised
             </Text>
             <Text
               fontSize="0.8rem"
@@ -125,10 +112,14 @@ const ProjectCard = ({ item }) => {
               textTransform={"uppercase"}
               color={useColorModeValue("#6d6d6e", "gray.400")}
             >
-              {(item.fundedAmount / item.investment) * 100}%
+              {(item.fundedAmount / 100000000 / item.investment) * 100}%
             </Text>
           </Flex>
-          <Progress size="sm" value={20} rounded={"10px"} />
+          <Progress
+            size="sm"
+            value={(item?.fundedAmount / 100000000 / item.investment) * 100}
+            rounded={"10px"}
+          />
           <Text
             fontSize="0.7rem"
             textAlign="left"
@@ -137,7 +128,7 @@ const ProjectCard = ({ item }) => {
             maxW={{ base: "100%", md: "470px" }}
             color={useColorModeValue("#6d6d6e", "gray.400")}
           >
-            {new Date(item.time).toLocaleDateString()}
+            {new Date(item.createdAt).toLocaleDateString()}
           </Text>
         </Stack>
       </CardBody>

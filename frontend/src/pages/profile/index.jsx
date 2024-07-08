@@ -45,6 +45,11 @@ import { FaChevronDown } from "react-icons/fa";
 import ProjectCard from "../../components/projectCard";
 import { data } from "../../utils/TrendingProjectsData";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getFundedProducts,
+  getProductsByWalletId,
+} from "../../store/actions/product.action";
 
 const Profile = () => {
   const [column, setColumn] = useState("4");
@@ -53,7 +58,12 @@ const Profile = () => {
   const [value, setValue] = useState("USD");
   const [isDisplay, setIsDisplay] = useState(false);
 
+  const { createdProducts, fundedProducts } = useSelector(
+    (state) => state.productReducer
+  );
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const walletAddress = JSON.parse(localStorage.getItem("wallet"))?.addresses[0]
     ?.address;
@@ -63,6 +73,11 @@ const Profile = () => {
       navigate("/");
     }
   }, [walletAddress]);
+
+  useEffect(() => {
+    dispatch(getProductsByWalletId({ walletId: walletAddress }));
+    dispatch(getFundedProducts({ walletId: walletAddress }));
+  }, [dispatch]);
 
   return (
     <Box>
@@ -894,7 +909,7 @@ const Profile = () => {
                   </Accordion>
                 </Box>
                 <Box w={{ base: "100%", lg: isDisplay ? "80%" : "100%" }}>
-                  <Text fontWeight={600}>0 items</Text>
+                  <Text fontWeight={600}>{fundedProducts?.length} items</Text>
                   <SimpleGrid
                     columns={{ base: 1, md: 2, lg: 3, xl: column }}
                     sx={{
@@ -906,11 +921,9 @@ const Profile = () => {
                       border: "1px solid lightgrey",
                     }}
                   >
-                    {data
-                      .filter((x) => x.trending)
-                      .map((item, index) => (
-                        <ProjectCard item={item} key={index} />
-                      ))}
+                    {fundedProducts?.map((item, index) => (
+                      <ProjectCard item={item} key={index} />
+                    ))}
                   </SimpleGrid>
                 </Box>
               </Flex>
@@ -1655,7 +1668,7 @@ const Profile = () => {
                   </Accordion>
                 </Box>
                 <Box w={{ base: "100%", lg: isDisplay ? "80%" : "100%" }}>
-                  <Text fontWeight={600}>0 items</Text>
+                  <Text fontWeight={600}>{createdProducts?.length} items</Text>
                   <SimpleGrid
                     columns={{ base: 1, md: 2, lg: 3, xl: column }}
                     sx={{
@@ -1667,11 +1680,9 @@ const Profile = () => {
                       border: "1px solid lightgrey",
                     }}
                   >
-                    {data
-                      .filter((x) => x.trending == false)
-                      .map((item, index) => (
-                        <ProjectCard item={item} key={index} />
-                      ))}
+                    {createdProducts?.map((item, index) => (
+                      <ProjectCard item={item} key={index} />
+                    ))}
                   </SimpleGrid>
                 </Box>
               </Flex>

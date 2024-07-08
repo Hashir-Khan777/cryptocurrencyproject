@@ -56,8 +56,17 @@ const Project = () => {
   const { product } = useSelector((state) => state.productReducer);
 
   const dispatch = useDispatch();
+  const walletAddress = JSON.parse(localStorage.getItem("wallet"))?.addresses[0]
+    ?.address;
 
   const transferBitcoin = async () => {
+    dispatch(
+      fundProduct({
+        id: product.id,
+        fundedAmount: amount,
+        walletId: walletAddress,
+      })
+    );
     if (wallet === "leather") {
       try {
         const response = await window.LeatherProvider.request("sendTransfer", {
@@ -69,7 +78,13 @@ const Project = () => {
           ],
           network: "testnet",
         });
-        dispatch(fundProduct({ id: product.id, fundedAmount: amount }));
+        dispatch(
+          fundProduct({
+            id: product.id,
+            fundedAmount: amount,
+            walletId: walletAddress,
+          })
+        );
         console.log(response, "response");
         onClose();
       } catch (err) {
@@ -85,7 +100,13 @@ const Project = () => {
             },
           ],
         });
-        dispatch(fundProduct({ id: product.id, fundedAmount: amount }));
+        dispatch(
+          fundProduct({
+            id: product.id,
+            fundedAmount: amount,
+            walletId: walletAddress,
+          })
+        );
         console.log(response, "response");
         onClose();
       } catch (err) {
@@ -154,7 +175,9 @@ const Project = () => {
             <Progress
               colorScheme="gray"
               size="sm"
-              value={(product?.fundedAmount / product.investment) * 100}
+              value={
+                (product?.fundedAmount / 100000000 / product.investment) * 100
+              }
               rounded={"10px"}
             />
             <Text sx={{ fontSize: "14px" }}>
@@ -444,30 +467,16 @@ const Project = () => {
             >
               UPDATES
             </Tab>
-            <Tab
-              _selected={{
-                color: "black",
-                borderColor: "#000",
-              }}
-              _active={{
-                bgColor: "transparent",
-              }}
-            >
-              DISSCUSSION
-            </Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
-              <Text>details</Text>
+              <Text>{product?.details}</Text>
             </TabPanel>
             <TabPanel>
               <Text>faq</Text>
             </TabPanel>
             <TabPanel>
               <Text>updates</Text>
-            </TabPanel>
-            <TabPanel>
-              <Text>disscussion</Text>
             </TabPanel>
           </TabPanels>
         </Tabs>
