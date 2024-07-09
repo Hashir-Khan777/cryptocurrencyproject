@@ -6,6 +6,8 @@ import {
   getProduct,
   getProductsByWalletId,
   getFundedProducts,
+  addUpdate,
+  getUpdates,
 } from "../actions/product.action";
 
 const initialState = {
@@ -13,7 +15,9 @@ const initialState = {
   products: [],
   createdProducts: [],
   fundedProducts: [],
+  updates: [],
   product: {},
+  update: {},
   image: null,
 };
 
@@ -37,7 +41,6 @@ export default createSlice({
     });
     builder.addCase(createProduct.fulfilled, (state, { payload }) => {
       state.product = payload;
-      state.products.push(payload);
       state.loading = false;
     });
     builder.addCase(createProduct.rejected, (state) => {
@@ -76,6 +79,29 @@ export default createSlice({
       state.loading = false;
     });
     builder.addCase(getFundedProducts.rejected, (state) => {
+      state.loading = false;
+    });
+
+    builder.addCase(addUpdate.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(addUpdate.fulfilled, (state, { payload }) => {
+      state.update = payload;
+      state.updates.push(payload);
+      state.loading = false;
+    });
+    builder.addCase(addUpdate.rejected, (state) => {
+      state.loading = false;
+    });
+
+    builder.addCase(getUpdates.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getUpdates.fulfilled, (state, { payload }) => {
+      state.updates = payload;
+      state.loading = false;
+    });
+    builder.addCase(getUpdates.rejected, (state) => {
       state.loading = false;
     });
   },

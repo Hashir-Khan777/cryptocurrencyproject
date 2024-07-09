@@ -27,6 +27,12 @@ import {
   Text,
   useColorModeValue,
   useDisclosure,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  Textarea,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -39,34 +45,34 @@ import man from "../../assets/images/man.png";
 import bike from "../../assets/images/bike.jpeg";
 import { FaFacebookSquare } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { fundProduct, getProduct } from "../../store/actions/product.action";
+import {
+  addUpdate,
+  fundProduct,
+  getProduct,
+  getUpdates,
+} from "../../store/actions/product.action";
 import Wallet from "sats-connect";
-import { getTransactions } from "../../store/actions/transactions.action";
 import XverseIcon from "../../assets/images/xverse_icon.png";
 import LeatherIcon from "../../assets/images/leather_icon.png";
 
 const Project = () => {
   const { id } = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const updateDisclosue = useDisclosure();
 
   const [amount, setAmount] = useState(0);
   const [wallet, setWallet] = useState("leather");
   const [error, setError] = useState("");
+  const [update, setUpdate] = useState("");
 
-  const { product } = useSelector((state) => state.productReducer);
+  const { product, updates } = useSelector((state) => state.productReducer);
+  const updateStatus = useSelector((state) => state.productReducer);
 
   const dispatch = useDispatch();
   const walletAddress = JSON.parse(localStorage.getItem("wallet"))?.addresses[0]
     ?.address;
 
   const transferBitcoin = async () => {
-    dispatch(
-      fundProduct({
-        id: product.id,
-        fundedAmount: amount,
-        walletId: walletAddress,
-      })
-    );
     if (wallet === "leather") {
       try {
         const response = await window.LeatherProvider.request("sendTransfer", {
@@ -117,7 +123,14 @@ const Project = () => {
 
   useEffect(() => {
     dispatch(getProduct({ id }));
+    dispatch(getUpdates({ id }));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (updateStatus.update?.update) {
+      updateDisclosue.onClose();
+    }
+  }, [updateStatus.update]);
 
   return (
     <Box>
@@ -205,6 +218,7 @@ const Project = () => {
                   )}
                 </HStack>
               </Box>
+              {/* {product?.walletId !== walletAddress ? ( */}
               <Button
                 fontSize="sm"
                 fontWeight={600}
@@ -217,6 +231,7 @@ const Project = () => {
               >
                 Fund Now
               </Button>
+              {/* // ) : null} */}
               <Box>
                 <Icon as={FaFacebookSquare} fontSize={"20px"} color="gray" />
                 <Icon as={FaTwitter} fontSize={"20px"} mx="20px" color="gray" />
@@ -473,10 +488,66 @@ const Project = () => {
               <Text>{product?.details}</Text>
             </TabPanel>
             <TabPanel>
-              <Text>faq</Text>
+              <Accordion defaultIndex={[0]} allowMultiple>
+                <AccordionItem>
+                  <h2>
+                    <AccordionButton>
+                      <Box as="span" flex="1" textAlign="left">
+                        Section 1 title
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  </AccordionPanel>
+                </AccordionItem>
+
+                <AccordionItem>
+                  <h2>
+                    <AccordionButton>
+                      <Box as="span" flex="1" textAlign="left">
+                        Section 2 title
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
             </TabPanel>
             <TabPanel>
-              <Text>updates</Text>
+              {product?.walletId === walletAddress ? (
+                <Button
+                  fontSize="sm"
+                  fontWeight={600}
+                  mb="20px"
+                  color="white"
+                  bg="#E16A15"
+                  _hover={{
+                    bg: "#e69517",
+                  }}
+                  onClick={updateDisclosue.onOpen}
+                >
+                  Add Update
+                </Button>
+              ) : null}
+              {updates?.map((update) => (
+                <Flex alignItems="center" justifyContent="space-between">
+                  <Text>{update.update}</Text>
+                  <Text>
+                    {new Date(update.createdAt).toLocaleDateString("en-US")}
+                  </Text>
+                </Flex>
+              ))}
             </TabPanel>
           </TabPanels>
         </Tabs>
@@ -532,6 +603,35 @@ const Project = () => {
               onClick={transferBitcoin}
             >
               Send
+            </Button>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+      <Modal isOpen={updateDisclosue.isOpen} onClose={updateDisclosue.onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Update Your Audience</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Textarea
+              type="text"
+              placeholder="Any updates..."
+              marginY={10}
+              onChange={(e) => setUpdate(e.target.value)}
+            />
+            <Button
+              fontSize="sm"
+              fontWeight={600}
+              color="white"
+              bg="#E16A15"
+              _hover={{
+                bg: "#e69517",
+              }}
+              onClick={() =>
+                dispatch(addUpdate({ update: update, ProductId: product?.id }))
+              }
+            >
+              Add Update
             </Button>
           </ModalBody>
         </ModalContent>

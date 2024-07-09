@@ -67,6 +67,11 @@ const ProductModel = sequelize.define("Product", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  verified: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
   fundedWallets: {
     type: DataTypes.ARRAY(DataTypes.STRING),
   },
