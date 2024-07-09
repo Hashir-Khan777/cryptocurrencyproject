@@ -5,7 +5,9 @@ export const getProducts = createAsyncThunk(
   "products/get",
   async (obj, { rejectWithValue }) => {
     try {
-      const { data } = await axios.get(`http://localhost:5000/api/products`);
+      const { data } = await axios.get(
+        `https://ionbackend.onrender.com/api/products`
+      );
       return data;
     } catch (err) {
       return rejectWithValue(
@@ -20,7 +22,7 @@ export const getProduct = createAsyncThunk(
   async (obj, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/products/${obj.id}`
+        `https://ionbackend.onrender.com/api/products/${obj.id}`
       );
       return data;
     } catch (err) {
@@ -36,7 +38,7 @@ export const getProductsByWalletId = createAsyncThunk(
   async (obj, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/products/wallet/${obj.walletId}`
+        `https://ionbackend.onrender.com/api/products/wallet/${obj.walletId}`
       );
       return data;
     } catch (err) {
@@ -52,7 +54,7 @@ export const getFundedProducts = createAsyncThunk(
   async (obj, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/products/funded/${obj.walletId}`
+        `https://ionbackend.onrender.com/api/products/funded/${obj.walletId}`
       );
       return data;
     } catch (err) {
@@ -68,7 +70,7 @@ export const createProduct = createAsyncThunk(
   async (obj, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/products`,
+        `https://ionbackend.onrender.com/api/products`,
         obj
       );
       return data;
@@ -85,7 +87,7 @@ export const addProductImage = createAsyncThunk(
   async (obj, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/products/image`,
+        `https://ionbackend.onrender.com/api/products/image`,
         obj
       );
       return data;
@@ -102,7 +104,7 @@ export const fundProduct = createAsyncThunk(
   async (obj, { rejectWithValue }) => {
     try {
       const { data } = await axios.put(
-        `http://localhost:5000/api/products/${obj.id}/${obj.walletId}`,
+        `https://ionbackend.onrender.com/api/products/${obj.id}/${obj.walletId}`,
         obj
       );
       return data;
@@ -119,7 +121,7 @@ export const addUpdate = createAsyncThunk(
   async (obj, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(
-        `http://localhost:5000/api/products/update`,
+        `https://ionbackend.onrender.com/api/products/update`,
         obj
       );
       return data;
@@ -136,7 +138,7 @@ export const getUpdates = createAsyncThunk(
   async (obj, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:5000/api/products/updates/${obj.id}`,
+        `https://ionbackend.onrender.com/api/products/updates/${obj.id}`,
         obj
       );
       return data;
