@@ -51,12 +51,13 @@ ProductRouter.get("/funded/:walletId", async (req, res) => {
       where: {
         verified: true,
         fundedWallets: {
-          [Op.contains]: [req.params.walletId],
+          [Op.contains]: [{ wallet: req.params.walletId }],
         },
       },
     });
     res.status(200).send(products);
   } catch (err) {
+    console.log(err);
     res.status(500).send(err);
   }
 });
@@ -76,9 +77,12 @@ ProductRouter.put("/:id/:walletId", async (req, res) => {
       where: { id: req.params.id },
     });
     product.increment("fundedAmount", { by: req.body.fundedAmount });
-    const fundedWallets = product.fundedWallets || [];
-    if (!fundedWallets.includes(req.params.walletId)) {
-      fundedWallets.push(req.params.walletId);
+    const fundedWallets = product.fundedWallets;
+    if (!fundedWallets.find((x) => x.wallet === req.params.walletId)) {
+      fundedWallets.push({
+        wallet: req.params.walletId,
+        amount: req.body.fundedAmount,
+      });
     }
     product.fundedWallets = fundedWallets;
     await product.save();

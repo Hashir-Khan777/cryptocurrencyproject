@@ -922,7 +922,7 @@ const Profile = () => {
                     }}
                   >
                     {fundedProducts?.map((item, index) => (
-                      <ProjectCard item={item} key={index} />
+                      <ProjectCard item={item} key={index} profile />
                     ))}
                   </SimpleGrid>
                 </Box>

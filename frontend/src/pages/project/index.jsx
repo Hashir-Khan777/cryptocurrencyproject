@@ -33,6 +33,7 @@ import {
   AccordionPanel,
   AccordionIcon,
   Textarea,
+  Heading,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -73,6 +74,13 @@ const Project = () => {
     ?.address;
 
   const transferBitcoin = async () => {
+    dispatch(
+      fundProduct({
+        id: product.id,
+        fundedAmount: amount,
+        walletId: walletAddress,
+      })
+    );
     if (wallet === "leather") {
       try {
         const response = await window.LeatherProvider.request("sendTransfer", {
@@ -197,6 +205,12 @@ const Project = () => {
               {product?.fundedAmount / 100000000} {product.coin} funded of{" "}
               {product.investment} {product.coin} goal
             </Text>
+            <Text mt="10px">
+              <Text as="span" fontWeight="semibold">
+                Stage:
+              </Text>{" "}
+              {product?.stage}
+            </Text>
             <Flex alignItems="flex-end" justifyContent="space-between">
               <Box mt={6}>
                 <Text
@@ -231,7 +245,7 @@ const Project = () => {
               >
                 Fund Now
               </Button>
-              {/* // ) : null} */}
+              {/* ) : null} */}
               <Box>
                 <Icon as={FaFacebookSquare} fontSize={"20px"} color="gray" />
                 <Icon as={FaTwitter} fontSize={"20px"} mx="20px" color="gray" />
@@ -555,7 +569,9 @@ const Project = () => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Fund</ModalHeader>
+          <ModalHeader>
+            <Heading size="lg">Fund this project</Heading>
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {error ? (
@@ -564,10 +580,11 @@ const Project = () => {
                 {error}
               </Alert>
             ) : null}
+            <Heading size="md">Choose Wallet</Heading>
             <HStack spacing={5} mt={"4px"}>
               <Image
                 sx={{
-                  width: { base: "50px", md: "100px" },
+                  width: { base: "50px", md: "50px" },
                   cursor: "pointer",
                   border: wallet === "xverse" ? "3px solid blue" : "none",
                 }}
@@ -577,7 +594,7 @@ const Project = () => {
               />
               <Image
                 sx={{
-                  width: { base: "50px", md: "100px" },
+                  width: { base: "50px", md: "50px" },
                   cursor: "pointer",
                   border: wallet === "leather" ? "3px solid blue" : "none",
                 }}
@@ -586,13 +603,96 @@ const Project = () => {
                 onClick={() => setWallet("leather")}
               />
             </HStack>
+            <Heading size="md" marginTop={10}>
+              Funding Amount
+            </Heading>
+            <Flex gap="10px" marginTop="20px">
+              <Box
+                border={`1px solid ${
+                  amount === Math.round(10 * 1657.798)
+                    ? "rgba(0, 0, 0, 1)"
+                    : "rgba(0, 0, 0, 0.1)"
+                }`}
+                paddingX="25px"
+                paddingY="5px"
+                textAlign="center"
+                borderRadius="10px"
+                cursor="pointer"
+                onClick={() => setAmount(Math.round(10 * 1657.798))}
+              >
+                <Text fontSize="20px">$10</Text>
+              </Box>
+              <Box
+                border={`1px solid ${
+                  amount === Math.round(50 * 1657.798)
+                    ? "rgba(0, 0, 0, 1)"
+                    : "rgba(0, 0, 0, 0.1)"
+                }`}
+                paddingX="25px"
+                paddingY="5px"
+                textAlign="center"
+                borderRadius="10px"
+                cursor="pointer"
+                onClick={() => setAmount(Math.round(50 * 1657.798))}
+              >
+                <Text fontSize="20px">$50</Text>
+              </Box>
+              <Box
+                border={`1px solid ${
+                  amount === Math.round(100 * 1657.798)
+                    ? "rgba(0, 0, 0, 1)"
+                    : "rgba(0, 0, 0, 0.1)"
+                }`}
+                paddingX="25px"
+                paddingY="5px"
+                textAlign="center"
+                borderRadius="10px"
+                cursor="pointer"
+                onClick={() => setAmount(Math.round(100 * 1657.798))}
+              >
+                <Text fontSize="20px">$100</Text>
+              </Box>
+              <Box
+                border={`1px solid ${
+                  amount === Math.round(1000 * 1657.798)
+                    ? "rgba(0, 0, 0, 1)"
+                    : "rgba(0, 0, 0, 0.1)"
+                }`}
+                paddingX="25px"
+                paddingY="5px"
+                textAlign="center"
+                borderRadius="10px"
+                cursor="pointer"
+                onClick={() => setAmount(Math.round(1000 * 1657.798))}
+              >
+                <Text fontSize="20px">$1000</Text>
+              </Box>
+            </Flex>
             <Input
               type="number"
-              placeholder="Amount"
-              marginY={10}
+              marginTop="15px"
+              marginBottom={10}
+              value={amount}
+              placeholder="Amount in sats"
               onChange={(e) => setAmount(e.target.value)}
             />
+            <Heading size="md">Details</Heading>
+            <Flex flexDirection="column" gap="10px" mt="10px">
+              <Flex gap="5px">
+                <Text fontWeight="bold">Funding: </Text>
+                <Text>{amount} sats</Text>
+              </Flex>
+              <Flex gap="5px">
+                <Text fontWeight="bold">Total: </Text>
+                <Text>${Math.round(amount / 1657.798)}</Text>
+              </Flex>
+              <Flex gap="5px">
+                <Text fontWeight="bold">Total In Btc: </Text>
+                <Text>{amount / 100000000} btc</Text>
+              </Flex>
+            </Flex>
             <Button
+              marginTop={10}
               fontSize="sm"
               fontWeight={600}
               color="white"

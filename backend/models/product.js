@@ -73,7 +73,8 @@ const ProductModel = sequelize.define("Product", {
     defaultValue: false,
   },
   fundedWallets: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
+    type: DataTypes.JSONB,
+    defaultValue: [],
   },
 });
 

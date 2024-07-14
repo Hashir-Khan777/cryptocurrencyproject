@@ -17,7 +17,10 @@ import { CiHeart } from "react-icons/ci";
 import { FaCheckSquare } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-const ProjectCard = ({ item }) => {
+const ProjectCard = ({ item, profile }) => {
+  const walletAddress = JSON.parse(localStorage.getItem("wallet"))?.addresses[0]
+    ?.address;
+
   return (
     <Card maxW="sm" minH="550px" height="auto">
       <Box as={Link} to={`/project/${item.id}`} width="100%">
@@ -120,6 +123,24 @@ const ProjectCard = ({ item }) => {
             value={(item?.fundedAmount / 100000000 / item.investment) * 100}
             rounded={"10px"}
           />
+          <Text mt="10px">
+            <Text as="span" fontWeight="semibold">
+              Stage:
+            </Text>{" "}
+            {item?.stage}
+          </Text>
+          {profile ? (
+            <Text>
+              <Text as="span" fontWeight="semibold">
+                You invested:
+              </Text>{" "}
+              $
+              {Math.round(
+                item?.fundedWallets?.find((x) => x.wallet === walletAddress)
+                  ?.amount / 1657.798
+              )}
+            </Text>
+          ) : null}
           <Text
             fontSize="0.7rem"
             textAlign="left"
